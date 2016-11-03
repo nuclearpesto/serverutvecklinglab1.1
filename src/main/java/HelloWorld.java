@@ -1,7 +1,3 @@
-
-
-package com.tutorialspoint.test;
-
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean(name = "helloWorld", eager = true)
