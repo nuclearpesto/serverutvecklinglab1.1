@@ -1,3 +1,4 @@
+package foo;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -6,10 +7,11 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class HelloWorld {
    public HelloWorld() {
-      System.out.println("HelloWorld started!");
+      System.out.println("foo.HelloWorld started! "+System.getProperty("user.dir"));
    }
 
    private String userName="Nanashi";
+   private String student = "nuffeli";
 
    public String getUserName() {
        return userName;
@@ -26,4 +28,8 @@ public class HelloWorld {
    public String getMessage() {
       return "Hello World!";
    }
+
+   public void setStudent(String s) { student = s; }
+
+   public String getStudent() { return new DBStuff().saveStudent();}
 }
