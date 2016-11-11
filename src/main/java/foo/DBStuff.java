@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.jpa.spi.HibernateEntityManagerFactoryAware;
 
 /**
  * Created by simonlundstrom on 09/11/16.
