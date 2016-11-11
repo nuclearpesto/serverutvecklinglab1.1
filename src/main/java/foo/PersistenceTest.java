@@ -8,13 +8,14 @@ import javax.persistence.*;
 public class PersistenceTest {
     private static EntityManagerFactory prylChefsFabrik;
     private static EntityManager prylchef;
-    static {
+
+    public PersistenceTest() {
         try {
             prylChefsFabrik = Persistence.createEntityManagerFactory("TestMupp");
             prylchef = prylChefsFabrik.createEntityManager();
         }
         catch(Exception ex) {
-            System.err.println("Fel utav bara helvete: "+ex);
+            System.err.println("Kunde inte fixa EntityManagern/Fabriken: "+ex);
             ex.printStackTrace();
         }
     }
