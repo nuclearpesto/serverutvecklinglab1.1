@@ -31,5 +31,5 @@ public class HelloWorld {
 
    public void setStudent(String s) { student = s; }
 
-   public String getStudent() { return new DBStuff().saveStudent();}
+   public String getStudent() { return new PersistenceTest().saveStudent();}
 }
