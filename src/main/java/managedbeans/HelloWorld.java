@@ -1,6 +1,8 @@
 package managedbeans;
 
 
+import http.Handler;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -37,4 +39,11 @@ public class HelloWorld {
     public String getStudent() {
       return "GO AWAY!";
     }
+
+    public String findUser(String s){
+        Handler h = new Handler();
+        return h.getUserByEmail(s);
+    }
+
+
 }
