@@ -1,12 +1,17 @@
 package managedbeans;
 
+import backend.data.viewmodels.resultviews.CreateUserResult;
+import backend.data.viewmodels.resultviews.LoginResult;
+import backend.data.viewmodels.resultviews.RegisterResult;
 import http.Handler;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -19,6 +24,16 @@ public class Login implements Serializable {
     private String email;
     private String pwd;
     private String msg;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private String name;
     private boolean success;
 
     @ManagedProperty(value="#{user}")
@@ -67,12 +82,45 @@ public class Login implements Serializable {
 
    public void login(){
         Handler h = new Handler();
-        if(h.login(email, pwd)){
+        LoginResult result = h.login(email, pwd);
+
+       if(result.isLogin()){
             success = true;
             user.setLoggedIn(true);
             user.setUsername(email);
         }else{
-            msg="OMG CANT LOGIN YAO";
+            success = false;
+           user.setLoggedIn(false);
+           user.setUsername(null);
+           msg=result.getReason();
+        }
+
+    }
+    public void register(){
+        System.out.println("REGISTER CALLED");
+        Handler h = new Handler();
+        CreateUserResult result = h.register(email, pwd, name);
+
+          if(result.isSuccess()){
+            success = true;
+            user.setLoggedIn(true);
+            user.setUsername(email);
+        }else{
+            success = false;
+           user.setLoggedIn(false);
+           user.setUsername(null);
+           msg=result.getReason();
+        }
+
+    }
+
+    public void redirectUserIfNotLoggedIn(ComponentSystemEvent event){
+        if(user==null || !user.isLoggedIn){
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }

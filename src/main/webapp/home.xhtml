@@ -1,12 +1,47 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+<f:view>
+    <f:event type="preRenderView" listener="#{loginBean.redirectUserIfNotLoggedIn}"></f:event>
+</f:view>
 <head>
-    <title>JSF Tutorial!</title>
+    <title>FACECRAP! THE CRAPPIEST FACE ON THE PLANET</title>
 </head>
 
 <body>
+<h2>LIST OF USERS</h2>
+<h:form>
 
+    <h:selectOneMenu value="#{managerBean.userEmail}">
+        <f:selectItems value="#{managerBean.users}" var="other" itemValue="#{other.email}" itemLabel="#{other.email}"/>
+    </h:selectOneMenu>
+    <h:commandButton action="#{managerBean.befriendUser()}" value="Befriend"></h:commandButton>
+
+    <!--
+
+    <h:dataTable value="#{managerBean.users}" var="bullshit">
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="NAME"/>
+            </f:facet>
+            <h:outputText value="#{bullshit.name}"></h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="EMAIL"/>
+            </f:facet>
+            <h:outputText value="#{bullshit.name}"></h:outputText>
+        </h:column>
+         <h:column>
+
+        </h:column>
+    </h:dataTable>
+-->
+
+
+</h:form>
 </body>
 </html>
