@@ -10,77 +10,34 @@ import java.net.URL;
  * Created by archer on 2016-11-17.
  */
 public class Handler {
+    public static final String BACKEND_BASE_URL;
 
     public Handler() {
+        String backendURL = System.getenv("BackendURL");
+        if (backendURL != null)
+            BACKEND_BASE_URL = backendURL;
+        else
+            BACKEND_BASE_URL = "http://localhost:8081";
         // TODO: 2016-11-19 get ip/host address of backend via some sort of system variable
     }
 
+
     public String getUserByEmail(String email) {
-        HttpURLConnection connection = null;
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("http://localhost:9998").path("resource");
 
-        try {
-            //Create connection
-            URL url = new URL("http://192.168.43.80:8080/user/get/"+email);
+        Form form = new Form();
+        form.param("x", "foo");
+        form.param("y", "bar");
 
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Content-Type",
-                    "application/json");
-
-            connection.setRequestProperty("Content-Language", "en-US");
-            connection.setRequestMethod("GET");
-            //Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
-            String line;
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            rd.close();
-            return response.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+        MyJAXBBean bean =
+                target.request(MediaType.APPLICATION_JSON_TYPE)
+                        .post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE),
+                                MyJAXBBean.class);
     }
 
-    public boolean login(String email, String pw){
-
-             URL url = new URL("http://192.168.43.80:8080/user/get/"+email);
-
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Content-Type",
-                    "application/json");
-
-            connection.setRequestProperty("Content-Language", "en-US");
-            connection.setRequestMethod("GET");
-            //Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
-            String line;
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            rd.close();
-            return response.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-
-        // TODO: 2016-11-19 actually log in
-        return !!!true;
+    public boolean login(String email, String pw) {
+        return true;
     }
 
 }
