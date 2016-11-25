@@ -3,25 +3,25 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
-<body>
-<f:view>
-    <h:outputLabel value="Hello, world"/>
-</f:view>
+<h:head>
+    <ui:include src="header.xhtml"></ui:include>
+</h:head>
 
-<h:form>
-    <h1>
-        #{loginBean.msg}
-    </h1>
-    <h:outputLabel value="username"/>
-    <h:inputText id="email" value="#{loginBean.email}"></h:inputText>
-    <br/>
-    <h:outputLabel value="password"></h:outputLabel>
-    <h:inputSecret id="password" value="#{loginBean.pwd}"></h:inputSecret>
-    <br></br>
-    <h:commandButton action="#{loginBean.login()}" value="login"/>
-    <h:link value="or register" outcome="register"></h:link>
-</h:form>
-</body>
+<h:body>
+    <h:form>
+        <h1>
+            #{loginBean.msg}
+        </h1>
+        <h:outputLabel value="username"/>
+        <h:inputText id="email" value="#{loginBean.email}"></h:inputText>
+        <br/>
+        <h:outputLabel value="password"></h:outputLabel>
+        <h:inputSecret id="password" value="#{loginBean.pwd}"></h:inputSecret>
+        <br></br>
+        <h:commandButton action="#{loginBean.login()}" value="login"/>
+        <h:link value="or register" outcome="register"></h:link>
+    </h:form>
+</h:body>
 </html>

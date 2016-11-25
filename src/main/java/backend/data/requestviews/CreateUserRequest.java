@@ -1,4 +1,4 @@
-package backend.data.viewmodels.requestviews;
+package backend.data.requestviews;
 
 /**
  * Created by simonlundstrom on 16/11/16.

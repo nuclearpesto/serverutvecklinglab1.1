@@ -1,11 +1,10 @@
-package backend.data.viewmodels.resultviews;
+package backend.data.resultviews;
 
 /**
  * Created by archer on 2016-11-22.
  */
-public class UserResult {
-    String email;
-    String name;
+public class GetUserResult{
+    String email,name;
 
     public String getEmail() {
         return email;
@@ -23,11 +22,11 @@ public class UserResult {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "UserResult{" +
-                "email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+    public GetUserResult(String email, String name) {
+        this.email = email;
+        this.name = name;
+    }
+
+    public GetUserResult() {
     }
 }

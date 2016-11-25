@@ -1,9 +1,10 @@
 package managedbeans;
 
-import backend.data.viewmodels.resultviews.CreateUserResult;
-import backend.data.viewmodels.resultviews.LoginResult;
-import backend.data.viewmodels.resultviews.RegisterResult;
+import backend.data.resultviews.CreateUserResult;
+import backend.data.resultviews.LoginResult;
 import http.Handler;
+
+import javax.faces.bean.RequestScoped;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -18,9 +19,9 @@ import java.io.Serializable;
  * Created by archer on 2016-11-19.
  */
 
-@ManagedBean(name="loginBean")
+@ManagedBean(name = "loginBean")
 @RequestScoped
-public class Login implements Serializable {
+public class LoginBean implements Serializable {
     private String email;
     private String pwd;
     private String msg;
@@ -36,7 +37,7 @@ public class Login implements Serializable {
     private String name;
     private boolean success;
 
-    @ManagedProperty(value="#{user}")
+    @ManagedProperty(value = "#{user}")
     private UserBean user;
 
 
@@ -80,42 +81,43 @@ public class Login implements Serializable {
         this.msg = msg;
     }
 
-   public void login(){
+    public void login() {
         Handler h = new Handler();
         LoginResult result = h.login(email, pwd);
 
-       if(result.isLogin()){
+        if (result.isSuccess()) {
             success = true;
             user.setLoggedIn(true);
             user.setUsername(email);
-        }else{
+        } else {
             success = false;
-           user.setLoggedIn(false);
-           user.setUsername(null);
-           msg=result.getReason();
+            user.setLoggedIn(false);
+            user.setUsername(null);
+            msg = result.getMessage();
         }
 
     }
-    public void register(){
+
+    public void register() {
         System.out.println("REGISTER CALLED");
         Handler h = new Handler();
         CreateUserResult result = h.register(email, pwd, name);
 
-          if(result.isSuccess()){
+        if (result.isSuccess()) {
             success = true;
             user.setLoggedIn(true);
             user.setUsername(email);
-        }else{
+        } else {
             success = false;
-           user.setLoggedIn(false);
-           user.setUsername(null);
-           msg=result.getReason();
+            user.setLoggedIn(false);
+            user.setUsername(null);
+            msg = result.getMessage();
         }
 
     }
 
-    public void redirectUserIfNotLoggedIn(ComponentSystemEvent event){
-        if(user==null || !user.isLoggedIn){
+    public void redirectUserIfNotLoggedIn(ComponentSystemEvent event) {
+        if (user == null || !user.isLoggedIn) {
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml");
             } catch (IOException e) {
@@ -125,5 +127,19 @@ public class Login implements Serializable {
 
     }
 
+    public void logout() {
+
+        if (user != null && user.isLoggedIn) {
+            Handler h = new Handler();
+            h.logout(user.getUsername());
+            user.setLoggedIn(false);
+            user.username = null;
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

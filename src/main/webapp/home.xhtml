@@ -2,46 +2,56 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
-<f:view>
-    <f:event type="preRenderView" listener="#{loginBean.redirectUserIfNotLoggedIn}"></f:event>
-</f:view>
-<head>
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
     <title>FACECRAP! THE CRAPPIEST FACE ON THE PLANET</title>
-</head>
+    <ui:include src="header.xhtml"></ui:include>
+</h:head>
 
-<body>
-<h2>LIST OF USERS</h2>
-<h:form>
+<h:body>
+    <f:view>
+        <f:event type="preRenderView" listener="#{loginBean.redirectUserIfNotLoggedIn}"></f:event>
+    </f:view>
 
-    <h:selectOneMenu value="#{managerBean.userEmail}">
-        <f:selectItems value="#{managerBean.users}" var="other" itemValue="#{other.email}" itemLabel="#{other.email}"/>
-    </h:selectOneMenu>
-    <h:commandButton action="#{managerBean.befriendUser()}" value="Befriend"></h:commandButton>
+    <ui:include src="menu.xhtml"/>
 
-    <!--
-
-    <h:dataTable value="#{managerBean.users}" var="bullshit">
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="NAME"/>
-            </f:facet>
-            <h:outputText value="#{bullshit.name}"></h:outputText>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="EMAIL"/>
-            </f:facet>
-            <h:outputText value="#{bullshit.name}"></h:outputText>
-        </h:column>
-         <h:column>
-
-        </h:column>
-    </h:dataTable>
--->
+    <h:form>
+        <h:inputTextarea label="New Post" id="someid" value="#{wallBean.newPostText}"></h:inputTextarea>
+        <h:commandButton action="#{wallBean.post()}" value="Post"></h:commandButton>
 
 
-</h:form>
-</body>
+        <h:dataTable value="#{wallBean.wall.postViews}" var="bullshit">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="TEXT"/>
+                </f:facet>
+                <h:outputText value="#{bullshit.text}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Date"/>
+                </f:facet>
+                <h:outputText value="#{bullshit.date}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="USER"/>
+                </f:facet>
+                <h:outputText value="#{bullshit.userId}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="COMMENTS"></h:outputText>
+                </f:facet>
+                <h:link value="comments" outcome="comments">
+                    <f:param name="postid" value="#{bullshit.postId}"/>
+                </h:link>
+            </h:column>
+        </h:dataTable>
+
+    </h:form>
+</h:body>
 </html>

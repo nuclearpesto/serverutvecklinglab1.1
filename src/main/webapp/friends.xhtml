@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Title</title>
+    <ui:include src="header.xhtml"></ui:include>
+</h:head>
+<h:body>
+    <f:view>
+        <f:event type="preRenderView" listener="#{loginBean.redirectUserIfNotLoggedIn}"></f:event>
+    </f:view>
+
+    <ui:include src="menu.xhtml"/>
+
+    <h:form>
+        <h2>LIST OF ALL USERS THAT YOU CAN BECOME FRIENDS WITH</h2>
+        <h:selectOneMenu value="#{friendBean.userEmail}">
+            <f:selectItems value="#{friendBean.allUsers}" var="other" itemValue="#{other.email}"
+                           itemLabel="#{other.email}"/>
+        </h:selectOneMenu>
+        <h:commandButton action="#{friendBean.befriendUser()}" value="Befriend"></h:commandButton>
+    </h:form>
+    <h:dataTable value="#{friendBean.friends}" var="friend">
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="NAME"/>
+            </f:facet>
+            <h:outputText value="#{friend.name}"></h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="EMAIL"/>
+            </f:facet>
+            <h:outputText value="#{friend.email}"></h:outputText>
+        </h:column>
+
+    </h:dataTable>
+
+
+</h:body>
+</html>
