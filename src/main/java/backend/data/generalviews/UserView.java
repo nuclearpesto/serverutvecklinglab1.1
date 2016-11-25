@@ -1,9 +1,9 @@
-package backend.data.resultviews;
+package backend.data.generalviews;
 
 /**
  * Created by archer on 2016-11-22.
  */
-public class GetUserResult{
+public class UserView {
     String email,name;
 
     public String getEmail() {
@@ -22,11 +22,19 @@ public class GetUserResult{
         this.name = name;
     }
 
-    public GetUserResult(String email, String name) {
+    public UserView(String email, String name) {
         this.email = email;
         this.name = name;
     }
 
-    public GetUserResult() {
+    public UserView() {
+    }
+
+    @Override
+    public String toString() {
+        return "UserView{" +
+                "email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

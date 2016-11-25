@@ -17,17 +17,23 @@
     <h1>COMMENTS PAGE</h1>
 
 
-    <p:layout style="min-width:400px;min-height:200px;">
-        <p:layoutUnit position="center">
-            <h:outputText value="#{param['postid']}"/>
-            <ui:repeat value="#{commentBean.comments.list}" var="comment">
-                <p:layoutUnit position="center">
-                    <h:outputText value="#{param['postid']}"/>
-                </p:layoutUnit>
-            </ui:repeat>
-        </p:layoutUnit>
-    </p:layout>
+   <h:dataTable value="#{commentBean.comments.list}" var="comment">
+       <h:column>
+           <h:outputText value="#{comment.userId}"></h:outputText>
+       </h:column>
+       <h:column>
+           <h:outputText value="#{comment.text}"></h:outputText>
+       </h:column>
 
+   </h:dataTable>
+    <h:form>
+        <h:inputTextarea value="#{commentBean.newCommentText}">
+
+        </h:inputTextarea>
+        <h:commandButton action="#{commentBean.newComment()}">
+            <f:param name="postid" value="#{commentBean.postid}"></f:param>
+        </h:commandButton>
+    </h:form>
 
 </h:body>
 </html>

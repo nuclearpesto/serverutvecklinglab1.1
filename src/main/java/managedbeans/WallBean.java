@@ -31,7 +31,8 @@ public class WallBean {
 
 
     @PostConstruct
-    public void init(){
+    public void init()
+    {
         wall = getWallWithOffset(0);
     }
 

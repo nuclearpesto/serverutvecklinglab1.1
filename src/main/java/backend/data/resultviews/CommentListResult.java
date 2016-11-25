@@ -26,4 +26,11 @@ public class CommentListResult extends Result {
 
     public CommentListResult() {
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "CommentListResult{" +
+                "list=" + list +
+                '}';
+    }
 }

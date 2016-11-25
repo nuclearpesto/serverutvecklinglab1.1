@@ -30,4 +30,12 @@ public class Result {
 
     public Result() {
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "message='" + message + '\'' +
+                ", success=" + success +
+                '}';
+    }
 }

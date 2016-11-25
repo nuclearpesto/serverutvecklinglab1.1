@@ -21,4 +21,11 @@ public class LoginResult extends Result {
 
     public LoginResult() {
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +"LoginResult{" +
+                "uuid='" + uuid + '\'' +
+                '}';
+    }
 }

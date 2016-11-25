@@ -1,6 +1,7 @@
 package http;
 
 
+import backend.data.generalviews.UserView;
 import backend.data.requestviews.*;
 import backend.data.resultviews.*;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -149,12 +150,12 @@ public class Handler {
     }
 
 
-    public List<GetUserResult> listUsers() {
+    public List<UserView> listUsers() {
 
-        List<GetUserResult> result = new ArrayList<GetUserResult>();
+        List<UserView> result = new ArrayList<UserView>();
         try {
             WebTarget target = client.target(BACKEND_BASE_URL).path("/user/list-users");
-            result = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get(new GenericType<List<GetUserResult>>() {
+            result = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get(new GenericType<List<UserView>>() {
             });
 
         } catch (ProcessingException ex) {
@@ -208,7 +209,6 @@ public class Handler {
 
             result = resp.readEntity(WallResult.class);
 
-            System.out.println("RESULT OF CALL IS " + result);
 
         } catch (ProcessingException ex) {
             result.setSuccess(false);
@@ -222,6 +222,7 @@ public class Handler {
         } finally {
             client.close();
         }
+        System.out.println("RESULT OF GET WALL CALL IS " + result);
         return result;
     }
 
@@ -258,5 +259,92 @@ public class Handler {
     public void logout(String username) {
         WebTarget target = client.target(BACKEND_BASE_URL).path("/user/logout").queryParam("id",username);
             Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get();
+    }
+
+    public List<UserView> searchUsers(String searchString) {
+
+        WebTarget target = client.target(BACKEND_BASE_URL).path("/user/listusers").queryParam("searchString",searchString);
+            return  target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(new GenericType<List<UserView>>(){});
+
+
+    }
+
+    public Result unbefriendUser(BefriendRequest req) {
+                Result result = new Result();
+        try {
+            WebTarget target = client.target(BACKEND_BASE_URL).path("/user/removeFriend");
+            Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.json(req));
+            result = resp.readEntity(Result.class);
+
+
+        } catch (ProcessingException ex) {
+            result.setSuccess(false);
+            result.setMessage("recieved garbage from server" + ex.getMessage());
+            // unable to map recieved json to pojo
+        } catch (IllegalStateException ex) {
+            result.setSuccess(false);
+            result.setMessage("cant read from invalid requests");
+            //something went terribad wrong
+
+        } finally {
+            client.close();
+        }
+
+
+        System.out.println("RESULT OF CALL IS " + result);
+        return result;
+    }
+
+    public Result comment(CreateCommentRequest cre) {
+                 Result result = new Result();
+        try {
+            WebTarget target = client.target(BACKEND_BASE_URL).path("/comment/post");
+            Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(cre));
+            result = resp.readEntity(Result.class);
+
+
+        } catch (ProcessingException ex) {
+            result.setSuccess(false);
+            result.setMessage("recieved garbage from server" + ex.getMessage());
+            // unable to map recieved json to pojo
+        } catch (IllegalStateException ex) {
+            result.setSuccess(false);
+            result.setMessage("cant read from invalid requests");
+            //something went terribad wrong
+
+        } finally {
+            client.close();
+        }
+        System.out.println("RESULT OF CREATE COMMENTCALL IS " + result);
+        return result;
+
+    }
+
+    public CommentListResult getCommentsBypostId (int postid) {
+                 CommentListResult result = new CommentListResult();
+        try {
+            WebTarget target = client.target(BACKEND_BASE_URL).path("/comment/get").queryParam("PostId",postid);
+            Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
+                    .get();
+            result = resp.readEntity(CommentListResult.class);
+
+
+        } catch (ProcessingException ex) {
+            result.setSuccess(false);
+            result.setMessage("recieved garbage from server" + ex.getMessage());
+            // unable to map recieved json to pojo
+        } catch (IllegalStateException ex) {
+            result.setSuccess(false);
+            result.setMessage("cant read from invalid requests");
+            //something went terribad wrong
+
+        } finally {
+            client.close();
+        }
+        System.out.println("RESULT OF CALL IS " + result);
+        return result;
+
     }
 }

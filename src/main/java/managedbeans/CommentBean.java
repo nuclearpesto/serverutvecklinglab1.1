@@ -1,14 +1,17 @@
 package managedbeans;
 
 import backend.data.generalviews.CommentView;
+import backend.data.requestviews.CreateCommentRequest;
 import backend.data.resultviews.CommentListResult;
 import http.Handler;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by archer on 2016-11-24.
@@ -19,24 +22,30 @@ public class CommentBean {
     CommentListResult comments;
     @ManagedProperty(value = "#{user}")
     UserBean user;
+    String newCommentText;
+    int postid;
+
 
     @PostConstruct
-    public void init(){
+    public void init() {
+        Map<String, String> params = FacesContext.getCurrentInstance().
+                getExternalContext().getRequestParameterMap();
+        try {
+            postid = Integer.parseInt(params.get("postid"));
+        } catch (NumberFormatException ex) {
+            postid = -1;
+        }
 
-        comments = new CommentListResult();
-        List<CommentView> commentsviews;
-        commentsviews = new ArrayList<>();
 
-        commentsviews.add(new CommentView("hello","igår",1,2,"pelle@pelle.pe"));
-        commentsviews.add(new CommentView("hello","igår",1,2,"pelle@pelle.pe"));
-        commentsviews.add(new CommentView("hello","igår",1,2,"pelle@pelle.pe"));
-        commentsviews.add(new CommentView("hello","igår",1,2,"pelle@pelle.pe"));
-        commentsviews.add(new CommentView("hello","igår",1,2,"pelle@pelle.pe"));
-        commentsviews.add(new CommentView("hello","igår",1,2,"pelle@pelle.pe"));
-        commentsviews.add(new CommentView("hello","igår",1,2,"pelle@pelle.pe"));
+        comments = new Handler().getCommentsBypostId(postid);
+    }
 
-        comments.setList(commentsviews);
-        //comments=  new Handler().getPosts();
+    public String getNewCommentText() {
+        return newCommentText;
+    }
+
+    public void setNewCommentText(String newCommentText) {
+        this.newCommentText = newCommentText;
     }
 
     public CommentListResult getComments() {
@@ -53,5 +62,19 @@ public class CommentBean {
 
     public void setUser(UserBean user) {
         this.user = user;
+    }
+
+    public int getPostid() {
+        return postid;
+    }
+
+    public void setPostid(int postid) {
+        this.postid = postid;
+    }
+
+    public void newComment() {
+        System.out.println("NYU FAOSDFGKSDFHNGÖKSADRASDRJHGÖKLSSDFHKÖHRGBERGBHAÖKSTGASEGHHEROHKOÅÖK");
+        Handler h = new Handler();
+        h.comment(new CreateCommentRequest(newCommentText, user.getUsername(), postid));
     }
 }

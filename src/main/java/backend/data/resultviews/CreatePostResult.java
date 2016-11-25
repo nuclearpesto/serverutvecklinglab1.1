@@ -26,4 +26,11 @@ public class CreatePostResult extends Result {
 
     public CreatePostResult() {
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "CreatePostResult{" +
+                "id=" + id +
+                '}';
+    }
 }

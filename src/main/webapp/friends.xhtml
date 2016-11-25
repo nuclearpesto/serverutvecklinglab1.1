@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"></meta>
     <title>Title</title>
@@ -16,13 +17,22 @@
     <ui:include src="menu.xhtml"/>
 
     <h:form>
-        <h2>LIST OF ALL USERS THAT YOU CAN BECOME FRIENDS WITH</h2>
-        <h:selectOneMenu value="#{friendBean.userEmail}">
-            <f:selectItems value="#{friendBean.allUsers}" var="other" itemValue="#{other.email}"
-                           itemLabel="#{other.email}"/>
-        </h:selectOneMenu>
-        <h:commandButton action="#{friendBean.befriendUser()}" value="Befriend"></h:commandButton>
+        <h:inputText id="search" value="#{friendBean.searchString}"></h:inputText>
+        <h:commandButton action="#{friendBean.search()}" value="search"></h:commandButton>
     </h:form>
+
+    <h:form>
+        <p:repeat value="#{friendBean.searchResult}" var="bull">
+            <h:outputText value="#{bull.name}"></h:outputText>
+            <p:commandButton actionListener="#{friendBean.befriendUser(bull.email)}" value="becomeFriend" ajax="false">
+            </p:commandButton>
+            <p:commandButton actionListener="#{friendBean.unbefriendUser(bull.email)}" value="unbecomeFriend" ajax="false">
+            </p:commandButton>
+            <br></br>
+
+       </p:repeat>
+    </h:form>
+
     <h:dataTable value="#{friendBean.friends}" var="friend">
         <h:column>
             <f:facet name="header">
