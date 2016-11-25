@@ -1,6 +1,7 @@
 package http;
 
 
+import backend.data.generalviews.PostView;
 import backend.data.generalviews.UserView;
 import backend.data.requestviews.*;
 import backend.data.resultviews.*;
@@ -173,20 +174,20 @@ public class Handler {
 
 
     public FriendListResult getFriends(String userEmail) {
-         FriendListResult result= new FriendListResult();
+        FriendListResult result = new FriendListResult();
         try {
 
-            WebTarget target = client.target(BACKEND_BASE_URL).path("/user/friendlist").queryParam("id",userEmail);
+            WebTarget target = client.target(BACKEND_BASE_URL).path("/user/friendlist").queryParam("id", userEmail);
             result = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(FriendListResult.class);
 
 
             System.out.println("RESULT OF CALL IS " + result);
 
         } catch (ProcessingException ex) {
-          ex.printStackTrace();
-           // unable to map recieved json to pojo
+            ex.printStackTrace();
+            // unable to map recieved json to pojo
         } catch (IllegalStateException ex) {
-           ex.printStackTrace();
+            ex.printStackTrace();
             //something went terribad wrong
 
         } finally {
@@ -227,11 +228,11 @@ public class Handler {
     }
 
 
-    public CreatePostResult createPost(String text, String userEmail){
+    public CreatePostResult createPost(String text, String userEmail) {
 
         CreatePostResult result = new CreatePostResult();
         CreatePostRequest request = new CreatePostRequest();
-        try{
+        try {
             request.setPostText(text);
             request.setUserEmail(userEmail);
             WebTarget target = client.target(BACKEND_BASE_URL).path("/post/create");
@@ -257,20 +258,21 @@ public class Handler {
     }
 
     public void logout(String username) {
-        WebTarget target = client.target(BACKEND_BASE_URL).path("/user/logout").queryParam("id",username);
-            Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get();
+        WebTarget target = client.target(BACKEND_BASE_URL).path("/user/logout").queryParam("id", username);
+        Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get();
     }
 
     public List<UserView> searchUsers(String searchString) {
 
-        WebTarget target = client.target(BACKEND_BASE_URL).path("/user/listusers").queryParam("searchString",searchString);
-            return  target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(new GenericType<List<UserView>>(){});
+        WebTarget target = client.target(BACKEND_BASE_URL).path("/user/listusers").queryParam("searchString", searchString);
+        return target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(new GenericType<List<UserView>>() {
+        });
 
 
     }
 
     public Result unbefriendUser(BefriendRequest req) {
-                Result result = new Result();
+        Result result = new Result();
         try {
             WebTarget target = client.target(BACKEND_BASE_URL).path("/user/removeFriend");
             Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
@@ -297,7 +299,7 @@ public class Handler {
     }
 
     public Result comment(CreateCommentRequest cre) {
-                 Result result = new Result();
+        Result result = new Result();
         try {
             WebTarget target = client.target(BACKEND_BASE_URL).path("/comment/post");
             Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
@@ -322,10 +324,10 @@ public class Handler {
 
     }
 
-    public CommentListResult getCommentsBypostId (int postid) {
-                 CommentListResult result = new CommentListResult();
+    public CommentListResult getCommentsBypostId(int postid) {
+        CommentListResult result = new CommentListResult();
         try {
-            WebTarget target = client.target(BACKEND_BASE_URL).path("/comment/get").queryParam("PostId",postid);
+            WebTarget target = client.target(BACKEND_BASE_URL).path("/comment/get").queryParam("PostId", postid);
             Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
                     .get();
             result = resp.readEntity(CommentListResult.class);
@@ -345,6 +347,13 @@ public class Handler {
         }
         System.out.println("RESULT OF CALL IS " + result);
         return result;
+
+    }
+
+    public List<PostView> getPostsByUser(String userid) {
+        WebTarget target = client.target(BACKEND_BASE_URL).path("/post/getbyuser").queryParam("userid", userid);
+        return target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(new GenericType<List<PostView>>() {
+        });
 
     }
 }
