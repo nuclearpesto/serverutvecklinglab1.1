@@ -38,10 +38,8 @@
             </p:column>
         </p:dataTable>
         <p:poll interval="3" listener="#{singlechatbean.refreshChat}" update="table" autoStart="true"/>
-    </h:form>
-    <h:form>
         <h:inputText value="#{singlechatbean.newMessage}"></h:inputText>
-        <h:commandButton value="post" actionListener="#{singlechatbean.postMessage()}"></h:commandButton>
+        <p:commandButton value="post" actionListener="#{singlechatbean.postMessage()}" ajax="true" update="table"></p:commandButton>
     </h:form>
     <h:form>
         <h:commandButton value="Återfärska!" actionListener="#{singlechatbean.refreshChat()}"></h:commandButton>
