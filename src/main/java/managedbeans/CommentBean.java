@@ -1,6 +1,6 @@
 package managedbeans;
 
-import backend.data.generalviews.CommentView;
+import backend.data.generalviews.PostView;
 import backend.data.requestviews.CreateCommentRequest;
 import backend.data.resultviews.CommentListResult;
 import http.Handler;
@@ -9,8 +9,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +22,7 @@ public class CommentBean {
     UserBean user;
     String newCommentText;
     int postid;
-
+    PostView post;
 
     @PostConstruct
     public void init() {
@@ -38,10 +36,19 @@ public class CommentBean {
 
 
         comments = new Handler().getCommentsBypostId(postid);
+        post = new Handler().getPostById(postid);
     }
 
     public String getNewCommentText() {
         return newCommentText;
+    }
+
+    public PostView getPost() {
+        return post;
+    }
+
+    public void setPost(PostView post) {
+        this.post = post;
     }
 
     public void setNewCommentText(String newCommentText) {

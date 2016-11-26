@@ -1,25 +1,25 @@
 <ui:component xmlns:h="http://java.sun.com/jsf/html"
               xmlns:ui="http://java.sun.com/jsf/facelets"
               xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:p="http://primefaces.org/ui">
+              xmlns:post="http://primefaces.org/ui">
     <f:view>
         <h:form>
-            <p:growl id="messages"/>
+            <post:growl id="messages"/>
 
-            <p:menubar>
-                <p:menuitem>
-                    <p:commandLink value="Logout" action="#{loginBean.logout()}" icon="ui-icon-extlink"/>
-                </p:menuitem>
-                <p:menuitem>
-                    <p:link value="Friends" outcome="friends"  icon="ui-icon-extlink"/>
-                </p:menuitem>
-                <p:menuitem>
-                    <p:link value="Chats" outcome="login" icon="ui-icon-extlink" ajax="false"/>
-                </p:menuitem>
-               <p:menuitem>
-                     <p:link value="Home" outcome="home"  />
-                </p:menuitem>
-            </p:menubar>
+            <post:menubar>
+                <post:menuitem>
+                    <post:commandLink value="Logout" action="#{loginBean.logout()}" icon="ui-icon-extlink"/>
+                </post:menuitem>
+                <post:menuitem>
+                    <post:link value="Friends" outcome="friends"  icon="ui-icon-extlink"/>
+                </post:menuitem>
+                <post:menuitem>
+                    <post:link value="Chats" outcome="login" icon="ui-icon-extlink" ajax="false"/>
+                </post:menuitem>
+               <post:menuitem>
+                     <post:link value="Home" outcome="home"  />
+                </post:menuitem>
+            </post:menubar>
         </h:form>
 
     </f:view>

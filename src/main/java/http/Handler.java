@@ -356,4 +356,10 @@ public class Handler {
         });
 
     }
+
+    public PostView getPostById(int postid) {
+        WebTarget target = client.target(BACKEND_BASE_URL).path("/post/getbyuser").queryParam("postId",postid);
+        return target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(PostView.class);
+
+    }
 }

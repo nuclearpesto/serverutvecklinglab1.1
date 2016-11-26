@@ -3,7 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:post="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"></meta>
     <title>Title</title>
@@ -22,15 +22,15 @@
     </h:form>
 
     <h:form>
-        <p:repeat value="#{friendBean.searchResult}" var="bull">
+        <post:repeat value="#{friendBean.searchResult}" var="bull">
             <h:outputText value="#{bull.name}"></h:outputText>
-            <p:commandButton actionListener="#{friendBean.befriendUser(bull.email)}" value="becomeFriend" ajax="false">
-            </p:commandButton>
-            <p:commandButton actionListener="#{friendBean.unbefriendUser(bull.email)}" value="unbecomeFriend" ajax="false">
-            </p:commandButton>
+            <post:commandButton actionListener="#{friendBean.befriendUser(bull.email)}" value="becomeFriend" ajax="false">
+            </post:commandButton>
+            <post:commandButton actionListener="#{friendBean.unbefriendUser(bull.email)}" value="unbecomeFriend" ajax="false">
+            </post:commandButton>
             <br></br>
 
-       </p:repeat>
+       </post:repeat>
     </h:form>
 
     <h:dataTable value="#{friendBean.friends}" var="friend">
