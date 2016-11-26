@@ -67,7 +67,6 @@ public class WallBean {
     }
 
     public void getMoreWall(){
-        currentOfffset+=postsPerPage;
         wall.getPostViews().addAll(getWallWithOffset(currentOfffset).getPostViews());
     }
 
