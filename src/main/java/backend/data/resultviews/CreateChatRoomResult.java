@@ -19,13 +19,6 @@ public class CreateChatRoomResult extends Result {
         return id;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + "CreateChatRoomResult{" +
-                "id=" + id +
-                '}';
-    }
-
     public void setId(int id) {
         this.id = id;
     }

@@ -7,13 +7,6 @@ import backend.data.generalviews.ChatRoomView;
  * Created by simonlundstrom on 24/11/16.
  */
 public class GetChatroomResult extends Result{
-    @Override
-    public String toString() {
-        return super.toString() + "GetChatroomResult{" +
-                "chatRoom=" + chatRoom +
-                '}';
-    }
-
     private ChatRoomView chatRoom;
 
     public GetChatroomResult(boolean success, String message, ChatRoomView chatRoom) {

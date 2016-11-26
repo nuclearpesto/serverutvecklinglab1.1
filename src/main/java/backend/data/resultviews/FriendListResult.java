@@ -26,11 +26,4 @@ public class FriendListResult extends Result{
 
     public FriendListResult() {
     }
-
-    @Override
-    public String toString() {
-        return super.toString() + "FriendListResult{" +
-                "friends=" + friends +
-                '}';
-    }
 }

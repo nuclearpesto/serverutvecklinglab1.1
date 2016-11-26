@@ -13,7 +13,6 @@ public class CreateCommentRequest {
     public CreateCommentRequest(String text, String userEmail, int postId) {
         this.text = text;
         this.userEmail = userEmail;
-        this.postId = postId;
     }
 
     public String getText() {

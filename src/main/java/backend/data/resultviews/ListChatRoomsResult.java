@@ -9,13 +9,6 @@ import java.util.List;
  * Created by simonlundstrom on 24/11/16.
  */
 public class ListChatRoomsResult extends Result{
-    @Override
-    public String toString() {
-         return super.toString() +"ListChatRoomsResult{" +
-                "rooms=" + rooms +
-                '}';
-    }
-
     List<ChatroomMetaData> rooms;
 
     public ListChatRoomsResult(boolean success, String message, List<ChatroomMetaData> rooms) {

@@ -11,6 +11,4 @@ public class CreateUserResult extends Result{
 
     public CreateUserResult() {
     }
-
-
 }

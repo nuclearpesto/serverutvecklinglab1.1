@@ -29,12 +29,4 @@ public class UserView {
 
     public UserView() {
     }
-
-    @Override
-    public String toString() {
-        return "UserView{" +
-                "email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
