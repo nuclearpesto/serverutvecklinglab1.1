@@ -11,7 +11,36 @@
 <h:body>
     OMG!!!
     <f:view>
-        <h:outputLabel value="Hello, world"/>
     </f:view>
+
+    <ui:include src="menu.xhtml"/>
+    <h:outputText value="AEWSUM CAHT #{singlechatbean.chatRoom.chatRoom.name}"></h:outputText>
+    <h:dataTable value="#{singlechatbean.chatRoom.chatRoom.messages}" var="messages">
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Guy"></h:outputText>
+            </f:facet>
+            <h:outputText value="#{messages.posterId}"></h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Said"></h:outputText>
+            </f:facet>
+            <h:outputText value="#{messages.text}"></h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="When"></h:outputText>
+            </f:facet>
+            <h:outputText value="#{messages.date}"></h:outputText>
+        </h:column>
+    </h:dataTable>
+    <h:form>
+        <h:inputText value="#{singlechatbean.newMessage}"></h:inputText>
+        <h:commandButton value = "post" actionListener="#{singlechatbean.postMessage()}"></h:commandButton>
+    </h:form>
+    <h:form>
+        <h:commandButton value = "Återfärska!" actionListener="#{singlechatbean.refreshChat()}"></h:commandButton>
+    </h:form>
 </h:body>
 </html>

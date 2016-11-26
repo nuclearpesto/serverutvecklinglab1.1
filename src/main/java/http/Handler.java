@@ -1,6 +1,7 @@
 package http;
 
 
+import backend.data.generalviews.ChatRoomView;
 import backend.data.generalviews.PostView;
 import backend.data.generalviews.UserView;
 import backend.data.requestviews.*;
@@ -108,11 +109,11 @@ public class Handler {
 
         } catch (ProcessingException ex) {
             result.setSuccess(false);
-            result.setMessage("recieved garbage from server"+ex.getMessage());
+            result.setMessage("recieved garbage from server" + ex.getMessage());
             // unable to map recieved json to pojo
         } catch (IllegalStateException ex) {
             result.setSuccess(false);
-            result.setMessage("cant read from invalid requests"+ex.getMessage());
+            result.setMessage("cant read from invalid requests" + ex.getMessage());
             //something went terribad wrong
 
         } finally {
@@ -319,7 +320,7 @@ public class Handler {
         } finally {
             client.close();
         }
-        System.out.println("RESULT OF CREATE COMMENTCALL IS " + result);
+        System.out.println("RESULT OF CREATE COMMENT CALL IS " + result);
         return result;
 
     }
@@ -357,7 +358,7 @@ public class Handler {
     }
 
     public GetPostResult getPostById(int postid) {
-        WebTarget target = client.target(BACKEND_BASE_URL).path("/post/get").queryParam("id",postid);
+        WebTarget target = client.target(BACKEND_BASE_URL).path("/post/get").queryParam("id", postid);
         return target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(GetPostResult.class);
 
     }
@@ -369,7 +370,7 @@ public class Handler {
 
     public CreateChatRoomResult createChat(String username, String friendEmail, String s) {
         CreateChatRoomResult result = new CreateChatRoomResult();
-        CreateChatroomRequest req = new CreateChatroomRequest(username,friendEmail,s);
+        CreateChatroomRequest req = new CreateChatroomRequest(username, friendEmail, s);
         try {
             WebTarget target = client.target(BACKEND_BASE_URL).path("/chat/create");
             Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
@@ -388,6 +389,47 @@ public class Handler {
             client.close();
         }
         System.out.println("RESULT OF CREATECHATROOM IS " + result);
+        return result;
+    }
+
+    public GetChatroomResult getChatroomById(int currentChatroom) {
+        GetChatroomResult result = new GetChatroomResult();
+        try {
+            WebTarget target = client.target(BACKEND_BASE_URL).path("/chat/get").queryParam("roomId", currentChatroom);
+            result = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(GetChatroomResult.class);
+        }catch (ProcessingException ex) {
+            result.setSuccess(false);
+            result.setMessage("recieved garbage from server" + ex.getMessage());
+            // unable to map recieved json to pojo
+        } catch (IllegalStateException ex) {
+            result.setSuccess(false);
+            result.setMessage("cant read from invalid requests");
+            //something went terribad wrong
+        } finally {
+            client.close();
+        }
+        System.out.println("RESULT OF GET_CHATROOM IS " + result);
+        return result;
+    }
+
+    public Result postToChatroom(String username, String mess, int currentChatroom) {
+        Result result = new Result();
+        ChatPostRequest req = new ChatPostRequest(username,mess,currentChatroom);
+        try {
+            WebTarget target = client.target(BACKEND_BASE_URL).path("/chat/post");
+            result = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).post(Entity.json(req)).readEntity(Result.class);
+        }catch (ProcessingException ex) {
+            result.setSuccess(false);
+            result.setMessage("recieved garbage from server" + ex.getMessage());
+            // unable to map recieved json to pojo
+        } catch (IllegalStateException ex) {
+            result.setSuccess(false);
+            result.setMessage("cant read from invalid requests");
+            //something went terribad wrong
+        } finally {
+            client.close();
+        }
+        System.out.println("RESULT OF POST_TO_CHATROM IS " + result);
         return result;
     }
 }

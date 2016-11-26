@@ -15,14 +15,12 @@ import java.util.Map;
 @ManagedBean(name="chatbean")
 public class ChatBean {
     ListChatRoomsResult chatrooms;
+
     @ManagedProperty(value = "#{user}")
     UserBean user;
-    int currentChatroom;
 
     @PostConstruct
     public void init() {
-        Map<String, String> params = FacesContext.getCurrentInstance().
-                getExternalContext().getRequestParameterMap();
         chatrooms = new Handler().listChatroomsByUser(user.getUsername());
     }
 
