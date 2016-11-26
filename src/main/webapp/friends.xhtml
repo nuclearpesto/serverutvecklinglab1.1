@@ -24,31 +24,41 @@
     <h:form>
         <post:repeat value="#{friendBean.searchResult}" var="bull">
             <h:outputText value="#{bull.name}"></h:outputText>
-            <post:commandButton actionListener="#{friendBean.befriendUser(bull.email)}" value="becomeFriend" ajax="false">
+            <post:commandButton actionListener="#{friendBean.befriendUser(bull.email)}" value="becomeFriend"
+                                ajax="false">
             </post:commandButton>
-            <post:commandButton actionListener="#{friendBean.unbefriendUser(bull.email)}" value="unbecomeFriend" ajax="false">
+            <post:commandButton actionListener="#{friendBean.unbefriendUser(bull.email)}" value="unbecomeFriend"
+                                ajax="false">
             </post:commandButton>
             <br></br>
 
-       </post:repeat>
+        </post:repeat>
     </h:form>
+    <h:form>
 
-    <h:dataTable value="#{friendBean.friends}" var="friend">
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="NAME"/>
-            </f:facet>
-            <h:outputText value="#{friend.name}"></h:outputText>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="EMAIL"/>
-            </f:facet>
-            <h:outputText value="#{friend.email}"></h:outputText>
-        </h:column>
-
-    </h:dataTable>
-
+        <h:dataTable value="#{friendBean.friends}" var="friend">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="NAME"/>
+                </f:facet>
+                <h:outputText value="#{friend.name}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="EMAIL"/>
+                </f:facet>
+                <h:outputText value="#{friend.email}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="CREAT CAHT"></h:outputText>
+                </f:facet>
+                <post:commandButton actionListener="#{chatbean.createChat(friend.email)}" value="crate chta"
+                                    ajax="false">
+                </post:commandButton>
+            </h:column>
+        </h:dataTable>
+    </h:form>
 
 </h:body>
 </html>

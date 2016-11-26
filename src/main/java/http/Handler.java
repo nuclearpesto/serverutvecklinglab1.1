@@ -108,11 +108,11 @@ public class Handler {
 
         } catch (ProcessingException ex) {
             result.setSuccess(false);
-            result.setMessage("recieved garbage from server");
+            result.setMessage("recieved garbage from server"+ex.getMessage());
             // unable to map recieved json to pojo
         } catch (IllegalStateException ex) {
             result.setSuccess(false);
-            result.setMessage("cant read from invalid requests");
+            result.setMessage("cant read from invalid requests"+ex.getMessage());
             //something went terribad wrong
 
         } finally {
@@ -347,7 +347,6 @@ public class Handler {
         }
         System.out.println("RESULT OF CALL IS " + result);
         return result;
-
     }
 
     public List<PostView> getPostsByUser(String userid) {
@@ -361,5 +360,34 @@ public class Handler {
         WebTarget target = client.target(BACKEND_BASE_URL).path("/post/get").queryParam("id",postid);
         return target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(GetPostResult.class);
 
+    }
+
+    public ListChatRoomsResult listChatroomsByUser(String username) {
+        WebTarget target = client.target(BACKEND_BASE_URL).path("/chat/listmyrooms").queryParam("user", username);
+        return target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(ListChatRoomsResult.class);
+    }
+
+    public CreateChatRoomResult createChat(String username, String friendEmail, String s) {
+        CreateChatRoomResult result = new CreateChatRoomResult();
+        CreateChatroomRequest req = new CreateChatroomRequest(username,friendEmail,s);
+        try {
+            WebTarget target = client.target(BACKEND_BASE_URL).path("/chat/create");
+            Response resp = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(req));
+            result = resp.readEntity(CreateChatRoomResult.class);
+        } catch (ProcessingException ex) {
+            result.setSuccess(false);
+            result.setMessage("recieved garbage from server" + ex.getMessage());
+            // unable to map recieved json to pojo
+        } catch (IllegalStateException ex) {
+            result.setSuccess(false);
+            result.setMessage("cant read from invalid requests");
+            //something went terribad wrong
+
+        } finally {
+            client.close();
+        }
+        System.out.println("RESULT OF CREATECHATROOM IS " + result);
+        return result;
     }
 }
