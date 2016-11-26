@@ -17,9 +17,9 @@
     <h1>COMMENTS PAGE</h1>
 
     <h2> ORIGINAL POST</h2>
-    <h:outputText value="#{commentBean.post.userId} said ->"></h:outputText>
-    <h:outputText value="#{commentBean.post.text}"></h:outputText>
-    <h:outputText value="#{commentBean.post.date}"></h:outputText>
+    <h:outputText value="#{commentBean.post.post.userId} said ->"></h:outputText>
+    <h:outputText value="#{commentBean.post.post.text}"></h:outputText>
+    <h:outputText value="#{commentBean.post.post.date}"></h:outputText>
    <br></br>
 
    <h:dataTable value="#{commentBean.comments.list}" var="comment">

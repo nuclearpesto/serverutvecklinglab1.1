@@ -3,6 +3,7 @@ package managedbeans;
 import backend.data.generalviews.PostView;
 import backend.data.requestviews.CreateCommentRequest;
 import backend.data.resultviews.CommentListResult;
+import backend.data.resultviews.GetPostResult;
 import http.Handler;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +23,7 @@ public class CommentBean {
     UserBean user;
     String newCommentText;
     int postid;
-    PostView post;
+    GetPostResult post;
 
     @PostConstruct
     public void init() {
@@ -43,11 +44,11 @@ public class CommentBean {
         return newCommentText;
     }
 
-    public PostView getPost() {
+    public GetPostResult getPost() {
         return post;
     }
 
-    public void setPost(PostView post) {
+    public void setPost(GetPostResult post) {
         this.post = post;
     }
 
