@@ -4,7 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:post="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     LOL!!!
 </h:head>
@@ -15,32 +15,36 @@
 
     <ui:include src="menu.xhtml"/>
     <h:outputText value="AEWSUM CAHT #{singlechatbean.chatRoom.chatRoom.name}"></h:outputText>
-    <h:dataTable value="#{singlechatbean.chatRoom.chatRoom.messages}" var="messages">
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="Guy"></h:outputText>
-            </f:facet>
-            <h:outputText value="#{messages.posterId}"></h:outputText>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="Said"></h:outputText>
-            </f:facet>
-            <h:outputText value="#{messages.text}"></h:outputText>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="When"></h:outputText>
-            </f:facet>
-            <h:outputText value="#{messages.date}"></h:outputText>
-        </h:column>
-    </h:dataTable>
     <h:form>
-        <h:inputText value="#{singlechatbean.newMessage}"></h:inputText>
-        <h:commandButton value = "post" actionListener="#{singlechatbean.postMessage()}"></h:commandButton>
+
+        <p:dataTable id="table" value="#{singlechatbean.chatRoom.chatRoom.messages}" var="messages">
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Guy"></h:outputText>
+                </f:facet>
+                <h:outputText id="poster" value="#{messages.posterId}"></h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Said"></h:outputText>
+                </f:facet>
+                <h:outputText id="message" value="#{messages.text}"></h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="When"></h:outputText>
+                </f:facet>
+                <h:outputText id="date" value="#{messages.date}"></h:outputText>
+            </p:column>
+        </p:dataTable>
+        <p:poll interval="3" listener="#{singlechatbean.refreshChat}" update="table" autoStart="true"/>
     </h:form>
     <h:form>
-        <h:commandButton value = "Återfärska!" actionListener="#{singlechatbean.refreshChat()}"></h:commandButton>
+        <h:inputText value="#{singlechatbean.newMessage}"></h:inputText>
+        <h:commandButton value="post" actionListener="#{singlechatbean.postMessage()}"></h:commandButton>
+    </h:form>
+    <h:form>
+        <h:commandButton value="Återfärska!" actionListener="#{singlechatbean.refreshChat()}"></h:commandButton>
     </h:form>
 </h:body>
 </html>

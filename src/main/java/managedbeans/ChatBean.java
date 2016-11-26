@@ -40,6 +40,6 @@ public class ChatBean {
         this.user = user;
     }
     public void createChat(String friendEmail) {
-        new Handler().createChat(user.getUsername(),friendEmail,user.getUsername().substring(0,4)+" & "+friendEmail.substring(0,4)+" caht!");
+        new Handler().createChat(user.getUsername(),friendEmail,user.getUsername().substring(0,Math.min(4,user.getUsername().length()))+" & "+friendEmail.substring(0,Math.min(4,friendEmail.length()))+" caht!");
     }
 }
