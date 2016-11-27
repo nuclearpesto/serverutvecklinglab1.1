@@ -17,6 +17,7 @@ import java.util.Map;
  * Created by archer on 2016-11-24.
  */
 @ManagedBean(name = "commentBean")
+@ViewScoped
 public class CommentBean {
 
     CommentListResult comments;
