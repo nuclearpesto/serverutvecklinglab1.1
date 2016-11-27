@@ -41,7 +41,7 @@
         <h:inputTextarea value="#{commentBean.newCommentText}">
 
         </h:inputTextarea>
-        <h:commandButton action="#{commentBean.newComment()}">
+        <h:commandButton actionListener="#{commentBean.newComment()}">
             <f:param name="postid" value="#{commentBean.postid}"></f:param>
         </h:commandButton>
     </h:form>
