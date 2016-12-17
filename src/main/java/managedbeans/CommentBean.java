@@ -9,6 +9,7 @@ import http.Handler;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import java.util.Map;
  * Created by archer on 2016-11-24.
  */
 @ManagedBean(name = "commentBean")
+@ViewScoped
 public class CommentBean {
 
     CommentListResult comments;
@@ -81,7 +83,7 @@ public class CommentBean {
     }
 
     public void newComment() {
-        System.out.println("NYU FAOSDFGKSDFHNGÖKSADRASDRJHGÖKLSSDFHKÖHRGBERGBHAÖKSTGASEGHHEROHKOÅÖK");
+        System.out.println("NY COMMENT TILL POST NR " + postid);
         Handler h = new Handler();
         h.comment(new CreateCommentRequest(newCommentText, user.getUsername(), postid));
     }

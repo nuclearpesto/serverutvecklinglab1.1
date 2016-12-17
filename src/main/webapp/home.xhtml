@@ -4,7 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:post="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <title>FACECRAP! THE CRAPPIEST FACE ON THE PLANET</title>
@@ -19,47 +19,47 @@
     <ui:include src="menu.xhtml"/>
 
     <h:form>
-        <h:inputTextarea label="New Post" id="someid" value="#{wallBean.newPostText}"></h:inputTextarea>
-        <h:commandButton action="#{wallBean.post()}" value="Post"></h:commandButton>
+        <p:inputTextarea label="New Post" id="someid" value="#{wallBean.newPostText}"></p:inputTextarea>
+        <p:commandButton action="#{wallBean.post()}" value="Post"></p:commandButton>
 
 
-        <h:dataTable value="#{wallBean.wall.postViews}" var="bullshit">
-            <h:column>
+        <p:dataTable id="table" value="#{wallBean.wall.postViews}" var="bullshit">
+            <p:column>
                 <f:facet name="header">
                     <h:outputText value="TEXT"/>
                 </f:facet>
                 <h:outputText value="#{bullshit.text}"></h:outputText>
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">
                     <h:outputText value="Date"/>
                 </f:facet>
                 <h:outputText value="#{bullshit.date}"></h:outputText>
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">
                     <h:outputText value="USER"/>
                 </f:facet>
                 <h:outputText value="#{bullshit.userId}"></h:outputText>
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">
                     <h:outputText value="COMMENTS"></h:outputText>
                 </f:facet>
-                <h:link value="comments" outcome="comments">
+                <p:link value="comments" outcome="comments">
                     <f:param name="postid" value="#{bullshit.postId}"/>
-                </h:link>
-            </h:column>
-            <h:column>
+                </p:link>
+            </p:column>
+            <p:column>
                 <f:facet name="header">
                     <h:outputText value="PROFILE"></h:outputText>
                 </f:facet>
-                <h:link value="profile" outcome="profile">
+                <p:link value="profile" outcome="profile">
                     <f:param name="userid" value="#{bullshit.userId}"/>
-                </h:link>
-            </h:column>
-        </h:dataTable>
-
+                </p:link>
+            </p:column>
+        </p:dataTable>
+        <p:poll interval="3" listener="#{wallBean.getMoreWall}" update="table"/>
     </h:form>
 </h:body>
 </html>
