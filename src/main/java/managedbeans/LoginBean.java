@@ -14,6 +14,8 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by archer on 2016-11-19.
@@ -89,13 +91,13 @@ public class LoginBean implements Serializable {
             success = true;
             user.setLoggedIn(true);
             user.setUsername(email);
+            FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("FacecrapLogin","{\"id\":\""+email+"\",\"token\":\""+result.getUuid()+"\"}",null);
         } else {
             success = false;
             user.setLoggedIn(false);
             user.setUsername(null);
             msg = result.getMessage();
         }
-
     }
 
     public void register() {
@@ -113,7 +115,6 @@ public class LoginBean implements Serializable {
             user.setUsername(null);
             msg = result.getMessage();
         }
-
     }
 
     public void redirectUserIfNotLoggedIn(ComponentSystemEvent event) {
@@ -134,12 +135,17 @@ public class LoginBean implements Serializable {
             h.logout(user.getUsername());
             user.setLoggedIn(false);
             user.username = null;
+            Map<String,Object> ingredienser = new HashMap<>();
+            ingredienser.put("maxAge",new Integer(0));
+            FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("FacecrapLogin","",ingredienser);
             try {
+                System.out.println("Loggade ut.");
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        else System.out.println("Du var inte ens inloggad!");
     }
 
 }
