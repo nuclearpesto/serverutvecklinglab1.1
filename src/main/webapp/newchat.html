@@ -53,7 +53,7 @@
             </md-list-item>
           </md-list>
           <md-inputcontainer>
-            <input ng-model="message"></input>
+            <input ng-type="text" ng-model="message" ng-enter="sendMessage(message,chatUI.id)"></input>
           </md-inputcontainer>
           <br>
           <md-button class="md-primary" ng-click="sendMessage(message,chatUI.id)">SNED</md-button>

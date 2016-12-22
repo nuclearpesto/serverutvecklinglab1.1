@@ -21,11 +21,12 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
     else {
         var kaka = JSON.parse(JSON.parse($cookies.get('FacecrapLogin')));
         console.log(kaka);
-        currentUser={token:kaka.token,id:kaka.username};
+        currentUser={token:kaka.token,id:kaka.id};
+        console.log("Anv(ndare: "+currentUser.id+currentUser.token);
     }
 
     // Kontakta bak{ndan och h{lsa
-    var baseURL = "ws://localhost:3000";
+    var baseURL = "ws://192.168.1.122:3000";
     var socket = new WebSocket(baseURL);
 
     function error(err) {
@@ -33,12 +34,11 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
     }
 
     socket.onopen = function() {
-        console.log("Uppkopplad")
-        var obj = {type:'message',data:'fr}n oss alla till er alla, en riktigt God Jul.'};
+        console.log("Uppkopplad");
+        var obj = {type:'init',data: {name:currentUser.id,token:currentUser.token}};
+        console.log(JSON.stringify(obj));
         socket.send(JSON.stringify(obj));
     }
-
-
 
 
 
@@ -61,24 +61,36 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
                 break;
             case 'unauthorized': $scope.$apply(unauthorized(msgfrombackend.data));
                 break;
-            case 'init': $scope.$apply(intialize(msgfrombackend.data));
+            case 'init': $scope.$apply(initialize(msgfrombackend.data));
                 break;
-            case 'newroom': $scope.$apply(roomAdded(msgfrombackend.data));
+            case 'newroom': $scope.$apply(chatroomReceivedFromBackend(msgfrombackend.data));
                 break;
         }
     };
 
-    function chatroomReceivedFromBackend(chatroom) {
+    function addChatroom(chatroom) {
         $scope.chatrooms.push({
             name:chatroom.name,
             id:chatroom.id,
-            members:chatroom.users,
-            messages:chatroom.posts
+            members:chatroom.participants,
+            messages:chatroom.messages
         })
     };
 
+    function initialize(data) {
+        if (!data.pelle) {
+            console.log("Fanns ingen pelle!");
+        }
+        if (!data.rooms) {
+            console.log("Fanns inga rum!");
+            return;
+        }
 
-
+        $scope.chatrooms = [];
+        for (i = 0; i<data.rooms.length; i++) {
+            addChatroom(data.rooms[i]);
+        }
+    }
 
 
     // Stuff som ska påverka UIt
@@ -94,8 +106,6 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
         }
         return null;
     };
-
-
 
 
 
@@ -138,16 +148,18 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
     };
 
     $scope.createNewChat = function(friend) {
-      console.log("Chatting with"+friend);
-      chatroomReceivedFromBackend({
-        name:"You+"+$scope.getUserNameById(friend),
-        id:"You"+friend,
-        users: [],
-        posts: []
-      })
+        var newRoom = {
+            type:"createRoom",
+            data: {
+                name:currentUser.id+"+"+$scope.getUserNameById(friend),
+                firstUser:currentUser.id,
+                secondUser:friend
+            }
+        }
+        socket.send(JSON.stringify(newRoom));
+
+      console.log("Sent: "+JSON.stringify(newRoom));
     };
-
-
 
 
 
@@ -201,7 +213,8 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
         chatroomID: "sdfadfa"
       }
     ];
-    $scope.chatrooms = [
+    $scope.chatrooms = [];
+/*
       {
         name: "General",
         id: "sdfadfa",
@@ -214,5 +227,5 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
         messages: $scope.messages
       }
     ];
-
+*/
 }]);
