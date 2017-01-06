@@ -13,6 +13,9 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
       {name:"UNDEFINED3",id:"null",contents:[]},
     ];
 
+    $scope.friends = [];
+    $scope.chatrooms = [];
+
     currentUser={token:"null",id:"me@me.me"};
     if (typeof($cookies.get('FacecrapLogin'))=='undefined') {
         console.log("VAFNNINGE JVLA KOOKKIE FANFANFAN");
@@ -26,7 +29,7 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
     }
 
     // Kontakta bak{ndan och h{lsa
-    var baseURL = "ws://192.168.1.122:3000";
+    var baseURL = "ws://localhost:3000";
     var socket = new WebSocket(baseURL);
 
     function error(err) {
@@ -42,7 +45,6 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
 
 
 
-
     // Ta emot meddelanden bak{ndan.
     socket.onmessage = function(event) {
         console.log(event.data);
@@ -55,7 +57,7 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
             return;
         }
         switch (msgfrombackend.type) {
-            case 'message': $scope.$apply(addMessageToChat(msgfrombackend.data));
+            case 'message': $scope.$apply(addMessageToChat(singlemsgtolocal(msgfrombackend.data)));
                 break;
             case 'error': serverProtests(msgfrombackend.data);
                 break;
@@ -63,39 +65,84 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
                 break;
             case 'init': $scope.$apply(initialize(msgfrombackend.data));
                 break;
-            case 'newroom': $scope.$apply(chatroomReceivedFromBackend(msgfrombackend.data));
+            case 'newroom': $scope.$apply(addChatroom(msgfrombackend.data));
                 break;
+            case'getFriends': $scope.$apply(friendsRecievedFromBackend(msgfrombackend.data));
+                break;
+
         }
     };
 
+    function singlemsgtolocal(elem){
+        date = new Date();
+        converted={
+                    text: elem.message,
+                    date: date.getDate() +"-" + date.getMonth() + "-" +date.getYear(),
+                    poster: elem.sender,
+                    roomid: elem.roomid
+                };
+        return converted
+
+    }
+
+    function arrmsgtolocal(msgarr){
+           localmsg= [];
+        console.log("in msgtolocal")
+           msgarr.forEach(function(elem){
+               converted={
+                    text: elem.message,
+                    date: elem.time,
+                    poster: elem.senderName
+                };
+               console.log("converting " +JSON.stringify(elem) + " \n to: " + JSON.stringify(converted));
+                localmsg.push(converted)
+
+           })
+        return localmsg
+    }
+    function friendsRecievedFromBackend(data){
+        console.log("adding " + data + "to friedns array");
+        $scope.friends = data.friends;
+    }
+
     function addChatroom(chatroom) {
+        chatroom.messages=arrmsgtolocal(chatroom.messages);
         $scope.chatrooms.push({
             name:chatroom.name,
             id:chatroom.id,
             members:chatroom.participants,
             messages:chatroom.messages
         })
+        console.log(JSON.stringify($scope.chatrooms))
     };
 
     function initialize(data) {
-        if (!data.pelle) {
-            console.log("Fanns ingen pelle!");
-        }
-        if (!data.rooms) {
+       if (!data.rooms) {
             console.log("Fanns inga rum!");
             return;
         }
-
+        getFriends();
         $scope.chatrooms = [];
         for (i = 0; i<data.rooms.length; i++) {
             addChatroom(data.rooms[i]);
         }
     }
 
+    function getFriends(){
+        socket.send(JSON.stringify({
+            type:"getFriends",
+            data: {
+                username:currentUser.id
+            }
+        }));
+
+
+    }
 
     // Stuff som ska påverka UIt
     function addMessageToChat(message) {
-        var chat = findChatById(message.chatroomID);
+        var chat = findChatById(message.roomid);
+            console.log("chat == null : "  + (chat == null))
         chat.messages.push(message);
         console.log("Chat: "+chat.id);
     }
@@ -115,10 +162,19 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
         text: message,
         poster: currentUser,
         date: new Date().getDate(),
-        chatroomID: chatId
+        roomid: chatId
       });
-        // todo: Send to server
-      console.log("Adding message: "+message,chatId);
+
+        outsidemsg = {
+            type: "message",
+            data:{
+                message:message,
+                roomid:chatId
+            }
+        }
+        socket.send(JSON.stringify(outsidemsg));
+
+        console.log("Adding message: "+message,chatId);
     };
 
     $scope.buttonClick = function() {
@@ -127,10 +183,12 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
               text: "Nytt meddelande",
               poster: "o@o.o",
               date: "2016-12-16:16-30",
-              chatroomID: "lol"
+              roomid: "lol"
         }
       )
     };
+
+
 
     $scope.chatClicked = function(id) {
       var clickedChat=findChatById(id);
@@ -165,55 +223,10 @@ angular.module('chatModule', ['ngMaterial','ngCookies'])
 
 
 
-    // Skit som vi bara har som testdata.
-    $scope.friends = [
-      {
-        email: "p@p.p",
-        name: "Pelle"
-      }, {
-        email: "k@k.k",
-        name:"Kalle"
-      }, {
-        email: "a@a.a",
-        name:"Anna"
-      }, {
-        email: "l@l.l",
-        name:"Lisa"
-      }, {
-        email: "m@m.m",
-        name:"Maja"
-      }
-    ];
 
-    $scope.messages = [
-      {
-        text: "Hejsan",
-        poster: "p@p.p",
-        date: "2016-12-16:14-30",
-        chatroomID: "sdfadfa"
-      },{
-        text: "HSvejsan",
-        poster: "l@l.l",
-        date: "2016-12-16:14-31",
-        chatroomID: "sdfadfa"
-      },{
-        text: "Tjosan",
-        poster: "m@m.m",
-        date: "2016-12-16:14-32",
-        chatroomID: "sdfadfa"
-      },{
-        text: "Flosan",
-        poster: "k@k.k",
-        date: "2016-12-16:14-33",
-        chatroomID: "sdfadfa"
-      }, {
-        text: "Men oj då",
-        poster: "p@p.p",
-        date: "2016-12-16:14-34",
-        chatroomID: "sdfadfa"
-      }
-    ];
-    $scope.chatrooms = [];
+
+    // Skit som vi bara har som testdata.
+
 /*
       {
         name: "General",
