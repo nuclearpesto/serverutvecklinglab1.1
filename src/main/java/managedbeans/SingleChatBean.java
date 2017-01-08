@@ -46,7 +46,7 @@ public class SingleChatBean {
 
     public void postMessage(String mess){
         Result result = new Handler().postToChatroom(user.getUsername(),mess,currentChatroom);
-        chatRoom.getChatRoom().getMessages().add(new ChatMessageView(mess,user.getUsername(),new Date(),currentChatroom,0));
+        chatRoom.getChatRoom().getMessages().add(new ChatMessageView(mess,user.getUsername(),new Date(),null,null));
     }
 
     public void postMessage() {

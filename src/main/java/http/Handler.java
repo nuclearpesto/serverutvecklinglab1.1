@@ -210,15 +210,13 @@ public class Handler {
                     .post(Entity.json(request));
 
             result = resp.readEntity(WallResult.class);
-
-
         } catch (ProcessingException ex) {
             result.setSuccess(false);
-            result.setMessage("recieved garbage from server");
+            result.setMessage("recieved garbage from server " +ex.getMessage());
             // unable to map recieved json to pojo
         } catch (IllegalStateException ex) {
             result.setSuccess(false);
-            result.setMessage("cant read from invalid requests");
+            result.setMessage("cant read from invalid requests " + ex.getMessage());
             //something went terribad wrong
 
         } finally {
