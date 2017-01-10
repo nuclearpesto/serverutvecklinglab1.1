@@ -156,7 +156,7 @@ public class Handler {
 
         List<UserView> result = new ArrayList<UserView>();
         try {
-            WebTarget target = client.target(BACKEND_BASE_URL).path("/user/list-users");
+            WebTarget target = client.target(BACKEND_BASE_URL).path("/user/listusers");
             result = target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get(new GenericType<List<UserView>>() {
             });
 
@@ -263,7 +263,7 @@ public class Handler {
 
     public List<UserView> searchUsers(String searchString) {
 
-        WebTarget target = client.target(BACKEND_BASE_URL).path("/user/listusers").queryParam("searchString", searchString);
+        WebTarget target = client.target(BACKEND_BASE_URL).path("/user/listusers").queryParam("searchString", searchString).queryParam("from",1).queryParam("amount",100);
         return target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(new GenericType<List<UserView>>() {
         });
 
@@ -323,7 +323,7 @@ public class Handler {
 
     }
 
-    public CommentListResult getCommentsBypostId(int postid) {
+    public CommentListResult getCommentsBypostId(String postid) {
         CommentListResult result = new CommentListResult();
         try {
             WebTarget target = client.target(BACKEND_BASE_URL).path("/comment/get").queryParam("PostId", postid);
@@ -355,7 +355,7 @@ public class Handler {
 
     }
 
-    public GetPostResult getPostById(int postid) {
+    public GetPostResult getPostById(String postid) {
         WebTarget target = client.target(BACKEND_BASE_URL).path("/post/get").queryParam("id", postid);
         return target.request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).get().readEntity(GetPostResult.class);
 
@@ -390,7 +390,7 @@ public class Handler {
         return result;
     }
 
-    public GetChatroomResult getChatroomById(int currentChatroom) {
+    public GetChatroomResult getChatroomById(String currentChatroom) {
         GetChatroomResult result = new GetChatroomResult();
         try {
             WebTarget target = client.target(BACKEND_BASE_URL).path("/chat/get").queryParam("roomId", currentChatroom);
@@ -410,8 +410,9 @@ public class Handler {
         return result;
     }
 
-    public Result postToChatroom(String username, String mess, int currentChatroom) {
+    public Result postToChatroom(String username, String mess, String currentChatroom) {
         Result result = new Result();
+        System.out.println("GONNA POST MESSAGE " + mess + " TO ROOM WITH ID " + currentChatroom + " WIHT USERNAME " + username);
         ChatPostRequest req = new ChatPostRequest(username,mess,currentChatroom);
         try {
             WebTarget target = client.target(BACKEND_BASE_URL).path("/chat/post");

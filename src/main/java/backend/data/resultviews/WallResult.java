@@ -26,11 +26,4 @@ public class WallResult extends Result {
     public void setPostViews(List<PostView> postViews) {
         this.postViews = postViews;
     }
-
-    @Override
-    public String toString() {
-        return "WallResult{" +
-                "postViews=" + postViews +
-                '}';
-    }
 }

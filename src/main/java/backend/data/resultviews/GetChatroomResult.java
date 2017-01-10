@@ -25,4 +25,10 @@ public class GetChatroomResult extends Result{
         this.chatRoom = chatRoom;
     }
 
+    @Override
+    public String toString() {
+        return "GetChatroomResult{" +
+                "chatRoom=" + chatRoom +
+                '}';
+    }
 }

@@ -24,19 +24,14 @@ public class CommentBean {
     @ManagedProperty(value = "#{user}")
     UserBean user;
     String newCommentText;
-    int postid;
+    String postid;
     GetPostResult post;
 
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().
                 getExternalContext().getRequestParameterMap();
-        try {
-            postid = Integer.parseInt(params.get("postid"));
-        } catch (NumberFormatException ex) {
-            postid = -1;
-        }
-
+        postid = params.get("postid");
 
         comments = new Handler().getCommentsBypostId(postid);
         post = new Handler().getPostById(postid);
@@ -74,11 +69,11 @@ public class CommentBean {
         this.user = user;
     }
 
-    public int getPostid() {
+    public String getPostid() {
         return postid;
     }
 
-    public void setPostid(int postid) {
+    public void setPostid(String postid) {
         this.postid = postid;
     }
 

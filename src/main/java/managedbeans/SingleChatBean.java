@@ -20,8 +20,8 @@ import java.util.Map;
 @ViewScoped
 public class SingleChatBean {
     GetChatroomResult chatRoom;
-    int currentChatroom;
-    int idOfLastMessage;
+    String currentChatroom;
+    String idOfLastMessage;
     String newMessage;
 
     @ManagedProperty(value = "#{user}")
@@ -32,10 +32,9 @@ public class SingleChatBean {
         Map<String, String> params = FacesContext.getCurrentInstance().
                 getExternalContext().getRequestParameterMap();
         try {
-            currentChatroom = Integer.parseInt(params.get("roomId"));
+            currentChatroom = params.get("roomId");
         }catch(NumberFormatException nfe) {
             System.out.println("Kunde ej omvandla rumid till en nuffra.");
-            currentChatroom=-1;
         }
         chatRoom = new Handler().getChatroomById(currentChatroom);
         System.out.println("SingleChatBean reporst: chatroom is "+chatRoom);
@@ -61,19 +60,19 @@ public class SingleChatBean {
         this.chatRoom = chatRoom;
     }
 
-    public int getCurrentChatroom() {
+    public String getCurrentChatroom() {
         return currentChatroom;
     }
 
-    public void setCurrentChatroom(int currentChatroom) {
+    public void setCurrentChatroom(String currentChatroom) {
         this.currentChatroom = currentChatroom;
     }
 
-    public int getIdOfLastMessage() {
+    public String getIdOfLastMessage() {
         return idOfLastMessage;
     }
 
-    public void setIdOfLastMessage(int idOfLastMessage) {
+    public void setIdOfLastMessage(String idOfLastMessage) {
         this.idOfLastMessage = idOfLastMessage;
     }
 

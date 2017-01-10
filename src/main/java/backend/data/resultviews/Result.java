@@ -23,6 +23,14 @@ public class Result {
         this.success = success;
     }
 
+    @Override
+    public String toString() {
+        return "Result{" +
+                "message='" + message + '\'' +
+                ", success=" + success +
+                '}';
+    }
+
     public Result(boolean success, String message) {
         this.message = message;
         this.success = success;
