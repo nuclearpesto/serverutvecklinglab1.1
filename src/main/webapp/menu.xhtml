@@ -1,0 +1,26 @@
+<ui:component xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:post="http://primefaces.org/ui">
+    <f:view>
+        <h:form>
+            <post:growl id="messages"/>
+
+            <post:menubar>
+                <post:menuitem>
+                    <post:commandLink value="Logout" action="#{loginBean.logout()}" icon="ui-icon-extlink"/>
+                </post:menuitem>
+                <post:menuitem>
+                    <post:link value="Friends" outcome="friends"  icon="ui-icon-extlink"/>
+                </post:menuitem>
+                <post:menuitem>
+                    <post:link value="Chats" outcome="chatlist" icon="ui-icon-extlink" ajax="false"/>
+                </post:menuitem>
+               <post:menuitem>
+                     <post:link value="Home" outcome="home"  />
+                </post:menuitem>
+            </post:menubar>
+        </h:form>
+
+    </f:view>
+</ui:component>

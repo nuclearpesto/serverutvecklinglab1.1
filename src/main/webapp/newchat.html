@@ -1,0 +1,84 @@
+<html lang="en" >
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+</head>
+<body ng-app="chatModule" ng-cloak>
+  <div ng-controller="AppCtrl" ng-cloak layout="column" layout-gt-sm="row">
+
+    <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="true">
+      <md-toolbar layout="row" class="md-hue-3">
+
+        <div class="md-toolbar-tools">
+          <span>MENY</span>
+        </div>
+      </md-toolbar>
+      <md-content>
+        <md-list >
+          <md-subheader>FRIENDS</md-subheader>
+          <md-list-item class="friend" id="{{person.email}}" ng-repeat="person in friends" ng-click="createNewChat(person.email)">
+            {{person.name}}
+          </md-list-item>
+        </md-list>
+        <md-divider></md-divider>
+        <md-list >
+          <md-subheader>CHATS</md-subheader>
+          <md-list-item class="chat" id="{{room.id}}" ng-repeat="room in chatrooms" ng-click="chatClicked(room.id)">
+            {{room.name}}
+          </md-list-item>
+        </md-list>
+      </md-content>
+
+    </md-sidenav>
+      <div flex-gt-sm="50" flex ng-repeat="chatUI in chatUIs">
+
+        <md-toolbar layout="row" class="md-hue-3">
+          <div class="md-toolbar-tools">
+            <span>CHATT {{$index+1}}</span>
+          </div>
+        </md-toolbar>
+
+        <md-content>
+          <md-list>
+            <md-subheader class="md-no-sticky">{{chatUI.name}}</md-subheader>
+            <md-list-item class="md-3-line" ng-repeat="message in chatUI.contents">
+              <div class="md-list-item-text" layout="column">
+                <h3>{{ getUserNameById(message.poster) }}</h3>
+                <h4>{{ message.date }}</h4>
+                <p>{{ message.text }}</p>
+              </div>
+            </md-list-item>
+          </md-list>
+          <md-inputcontainer>
+            <input ng-type="text" ng-model="message" ng-enter="sendMessage(message,chatUI.id)"></input>
+          </md-inputcontainer>
+          <br>
+          <md-button class="md-primary" ng-click="sendMessage(message,chatUI.id)">SNED</md-button>
+        </md-content>
+      </div>
+  </div>
+
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+  <!-- Angular Cookie Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-cookies.min.js"></script>
+
+  <!-- Your application bootstrap  -->
+  <script src="js/chatcontroller.js"></script>
+
+</body>
+</html>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at http://material.angularjs.org/license.
+-->

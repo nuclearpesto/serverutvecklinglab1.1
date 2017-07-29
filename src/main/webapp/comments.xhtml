@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:post="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Title</title>
+</h:head>
+<h:body>
+    <f:view>
+        <f:event type="preRenderView" listener="#{loginBean.redirectUserIfNotLoggedIn}"></f:event>
+    </f:view>
+    <ui:include src="header.xhtml"></ui:include>
+    <ui:include src="menu.xhtml"/>
+    <h1>COMMENTS PAGE</h1>
+
+    <h2> ORIGINAL POST</h2>
+    <h:outputText value="#{commentBean.post.post.userId} said ->"></h:outputText>
+    <h:outputText value="#{commentBean.post.post.text}"></h:outputText>
+    <h:outputText value="#{commentBean.post.post.date}"></h:outputText>
+   <br></br>
+
+   <h:dataTable value="#{commentBean.comments.list}" var="comment">
+       <h:column>
+           <f:facet name="header">
+                <h:outputText value="NAME"/>
+            </f:facet>
+           <h:outputText value="#{comment.userId}"></h:outputText>
+       </h:column>
+       <h:column>
+           <f:facet name="header">
+                <h:outputText value="COMMENT"/>
+            </f:facet>
+           <h:outputText value="#{comment.text}"></h:outputText>
+       </h:column>
+
+   </h:dataTable>
+    <h:form>
+        <h:inputTextarea value="#{commentBean.newCommentText}">
+
+        </h:inputTextarea>
+        <h:commandButton actionListener="#{commentBean.newComment()}">
+            <f:param name="postid" value="#{commentBean.postid}"></f:param>
+        </h:commandButton>
+    </h:form>
+
+</h:body>
+</html>

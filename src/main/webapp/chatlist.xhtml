@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:post="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Chat</title>
+</h:head>
+<h:body>
+    <f:view>
+        <f:event type="preRenderView" listener="#{loginBean.redirectUserIfNotLoggedIn}"></f:event>
+    </f:view>
+    <ui:include src="header.xhtml"></ui:include>
+    <ui:include src="menu.xhtml"/>
+    <h1>CHATROOM LIST PAGE</h1>
+
+    <h:dataTable value="#{chatbean.chatrooms.rooms}" var="room">
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="CHATROOM NAME"/>
+            </f:facet>
+            <h:outputText value="#{room.roomName}"></h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="LINK"></h:outputText>
+            </f:facet>
+            <h:link value="enter!" outcome="chat">
+                <f:param name="roomId" value="#{room.roomId}"/>
+            </h:link>
+        </h:column>
+    </h:dataTable>
+
+
+</h:body>
+</html>

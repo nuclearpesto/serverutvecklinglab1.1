@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:post="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Title</title>
+</h:head>
+
+
+<h:body>
+
+
+    <f:view>
+        <f:event type="preRenderView" listener="#{loginBean.redirectUserIfNotLoggedIn}"></f:event>
+    </f:view>
+
+    <ui:include src="menu.xhtml"/>
+    <h:outputText value="PROFILE FOR USER #{profileBean.userid}"></h:outputText>
+    <h:dataTable value="#{profileBean.posts}" var="post">
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="post"></h:outputText>
+            </f:facet>
+            <h:outputText value="#{post.text}"></h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="date"></h:outputText>
+            </f:facet>
+            <h:outputText value="#{post.date}"></h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="COMMENTS"></h:outputText>
+            </f:facet>
+            <h:link value="comments" outcome="comments">
+                <f:param name="postid" value="#{post.postId}"/>
+            </h:link>
+        </h:column>
+    </h:dataTable>
+
+</h:body>
+</html>
